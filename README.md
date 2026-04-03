@@ -34,6 +34,47 @@ pip install autogluon
 
 Visit our [Installation Guide](https://auto.gluon.ai/stable/install.html) for detailed instructions, including GPU support, Conda installs, and optional dependencies.
 
+## Developing from source (local)
+
+This is the primary path for contributors and for running the test suite on a machine or VM.
+
+**Requirements:** Python 3.10, 3.11, 3.12, or 3.13 (see `PYTHON_REQUIRES` in `core/src/autogluon/core/_setup_utils.py`). Linux is recommended.
+
+1. Clone the repository and `cd` into its root.
+2. Create and activate a virtual environment.
+3. Install [uv](https://docs.astral.sh/uv/), for example: `pip install uv`.
+4. Install CPU builds of PyTorch (versions must satisfy the `torch` range in `core/src/autogluon/core/_setup_utils.py`; the pins below are one valid choice):
+
+```bash
+python -m uv pip install -U "torch==2.6.0" "torchvision==0.21.0" --extra-index-url https://download.pytorch.org/whl/cpu
+```
+
+5. Install all AutoGluon subpackages in editable mode from the repo root (same behavior as `./full_install.sh` in this tree):
+
+```bash
+./full_install.sh
+```
+
+### Running the full test suite locally
+
+Running every module’s tests can take a long time, but this is the complete set of top-level test directories used in development (see also [CONTRIBUTING.md](CONTRIBUTING.md)):
+
+```bash
+pytest common/tests
+pytest core/tests
+pytest features/tests
+pytest tabular/tests
+pytest multimodal/tests
+pytest timeseries/tests
+```
+
+Run a single file or test node while iterating, for example:
+
+```bash
+python -m pytest path/to/test_file.py
+python -m pytest path/to/test_file.py::test_name
+```
+
 ## :zap: Quickstart
 
 Build accurate end-to-end ML models in just 3 lines of code!
